@@ -4,7 +4,7 @@
 
 ## 1. Overview & Vision
 
-Kai is a **Universal Brain** within the OpenCode agent's ecosystem — a single entry point for intelligent orchestration.
+Kai is a **Universal Brain** for AI coding agent ecosystems — a single entry point for intelligent orchestration, portable across [OpenCode](https://opencode.ai) and [Claude Code](https://claude.com/claude-code).
 
 In this architecture, Kai is the **sole primary agent** and decision-maker. All other agents act as specialized subagents that execute Kai's directives. Users interact _only_ with Kai. Kai analyzes requests, plans execution, routes to specialists, and ensures quality.
 
@@ -21,13 +21,15 @@ In this architecture, Kai is the **sole primary agent** and decision-maker. All 
 
 ### Prerequisites
 
-- [OpenCode](https://opencode.ai) installed and configured
+- [OpenCode](https://opencode.ai) or [Claude Code](https://claude.com/claude-code) installed and configured
 - A terminal with bash or zsh
 - Git (optional, for cloning)
 
 ### Installation
 
-#### Quick Install (Recommended)
+#### OpenCode
+
+##### Quick Install (Recommended)
 
 Use the installer script to automatically download a specific Kai release and configure OpenCode:
 
@@ -69,7 +71,7 @@ curl -fsSL https://kai.21no.de/scripts/installer.sh | bash -s -- --help
 --repo OWNER/REPO    # Use custom GitHub repository (default: BackendStack21/kai)
 ```
 
-#### Manual Installation
+##### Manual Installation
 
 Alternatively, you can manually copy the `agents/` folder into your OpenCode configuration directory:
 
@@ -83,6 +85,52 @@ ln -s $(pwd)/kai-agents/agents ~/.config/opencode/agents
 ```
 
 The `agents/` folder is fully self-contained. Kai's agent definition (`agents/kai.md`) includes all behavioral instructions needed to operate — no external files required.
+
+#### Claude Code
+
+> **Note:** Unlike OpenCode (where installing sets Kai as the default agent), Kai runs as an explicitly-invoked subagent on Claude Code — install just adds it to your available agents, nothing changes until you summon it with `--agent kai` or `@agent-kai`.
+
+##### Quick Install (Recommended)
+
+Use the installer script to automatically download a specific Kai release and configure Claude Code:
+
+```bash
+# Download and run the installer
+curl -fsSL https://kai.21no.de/scripts/installer-claude.sh | bash -s -- latest --yes
+```
+
+```bash
+# Download and run the installer (replace latest with desired version)
+curl -fsSL https://kai.21no.de/scripts/installer-claude.sh | bash -s -- v1.2.2 --yes
+```
+
+> **Note:** Replace `v1.2.2` with the desired [release version](https://github.com/BackendStack21/kai/releases). The version can be specified with or without the `v` prefix (e.g., `v1.2.2` or `1.0.0`).
+
+**Installer Options:**
+
+```bash
+# See all available options
+curl -fsSL https://kai.21no.de/scripts/installer-claude.sh | bash -s -- --help
+
+# Common options:
+--yes, -y            # Skip confirmation prompts
+--backup             # Create backup before installing
+--verbose            # Show detailed progress
+--dry-run            # Preview changes without installing
+--config-dir PATH    # Use custom Claude Code config directory (default: ~/.claude)
+--output-dir PATH    # Use custom temporary directory
+--repo OWNER/REPO    # Use custom GitHub repository (default: BackendStack21/kai)
+```
+
+##### Manual Installation
+
+Alternatively, copy the `claude/agents/` folder into your Claude Code configuration directory:
+
+```bash
+cp claude/agents/*.md ~/.claude/agents/
+```
+
+Restart Claude Code or start a new session to load the new agents. See [claude/README.md](claude/README.md) for architecture details.
 
 ### How to Use Kai
 

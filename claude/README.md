@@ -10,10 +10,9 @@ claude --agent kai
 
 # Per-task: summon Kai via @-mention
 @agent-kai build an auth system
-
-# Install agents (one-time)
-cp claude/agents/*.md ~/.claude/agents/
 ```
+
+See [Installation](#installation) below for the one-time agent setup.
 
 ## Architecture
 
@@ -32,13 +31,7 @@ Kai uses Claude Code's `Agent` tool to spawn subagents, with full support for ne
 
 ## Installation
 
-Copy the agent definitions to your Claude Code user directory:
-
-```bash
-cp claude/agents/*.md ~/.claude/agents/
-```
-
-Restart Claude Code or start a new session. Agents are loaded at session start.
+See the root [README.md](../README.md#claude-code) "Claude Code" install section for the quick-install script and manual steps.
 
 ## Agent File Format
 

@@ -31,10 +31,20 @@ jobs:
           echo "Contents of kai-${{ steps.version.outputs.tag }}.zip:"
           unzip -l kai-${{ steps.version.outputs.tag }}.zip
 
+      - name: Create claude zip
+        run: |
+          zip -r kai-claude-${{ steps.version.outputs.tag }}.zip claude
+
+          # Verify zip contents
+          echo "Contents of kai-claude-${{ steps.version.outputs.tag }}.zip:"
+          unzip -l kai-claude-${{ steps.version.outputs.tag }}.zip
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: kai-${{ steps.version.outputs.tag }}.zip
+          files: |
+            kai-${{ steps.version.outputs.tag }}.zip
+            kai-claude-${{ steps.version.outputs.tag }}.zip
           generate_release_notes: true
           draft: false
           prerelease: false
