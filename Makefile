@@ -23,6 +23,7 @@ test-preflight: lint-agents
 lint-agents:
 	@echo "Linting agent definitions..."
 	@bash -lc 'bash tests/check_agents.sh'
+	@bash -lc 'bash tests/check_claude_agents.sh'
 
 test-all: test-main
 	@echo ""
