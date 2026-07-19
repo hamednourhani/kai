@@ -17,7 +17,9 @@ gemini
 
 Kai runs as the **main agent persona** via `GEMINI.md`. Unlike Claude Code where Kai is a subagent, on Gemini CLI Kai IS the main agent — this is because Gemini CLI subagents cannot spawn other subagents (recursion protection).
 
-Kai has access to 20 specialized subagents:
+> **Note:** This means installing Kai makes it the **default persona for every Gemini CLI session**, not an opt-in agent you select. If Kai ran as a subagent instead, it wouldn't be able to call any other subagent — Gemini CLI's subagent registration doesn't allow subagent-to-subagent calls — so it has to load as the main persona via `GEMINI.md`. Contrast with OpenCode, where Kai installs as one of several selectable primary agents.
+
+Kai has access to 21 specialized subagents:
 
 | Tier | Agents |
 |------|--------|
@@ -26,21 +28,13 @@ Kai has access to 20 specialized subagents:
 | **Research** | research, fact-check |
 | **Fast-Track** | explorer, doc-fixer, quick-reviewer, dependency-manager |
 | **Learning** | postmortem, refactor-advisor |
-| **Utility** | executive-summarizer |
+| **Utility** | executive-summarizer, jira-writer |
 
 The main agent (Kai) classifies every request using the routing table and delegates to the appropriate specialist subagent directly.
 
 ## Installation
 
-Copy the agent definitions and context files to your Gemini CLI user directory:
-
-```bash
-cp gemini/agents/*.md ~/.gemini/agents/
-cp gemini/KAI.md ~/.gemini/
-cp gemini/GEMINI.md ~/.gemini/
-```
-
-Restart Gemini CLI or run `/memory refresh` to load the new context.
+See the root [README.md](../README.md#gemini-cli) "Gemini CLI" install section for the quick-install script and manual steps.
 
 ## Agent File Format
 
@@ -57,6 +51,10 @@ tools:
   - replace
   - run_shell_command
   - grep_search
+  - glob
+  - list_directory
+  - google_web_search
+  - write_todos
 temperature: 0.1
 max_turns: 40
 timeout_mins: 20

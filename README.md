@@ -4,7 +4,7 @@
 
 ## 1. Overview & Vision
 
-Kai is a **Universal Brain** within the OpenCode agent's ecosystem — a single entry point for intelligent orchestration.
+Kai is a **Universal Brain** for AI coding agent ecosystems — a single entry point for intelligent orchestration, portable across [OpenCode](https://opencode.ai) and [Gemini CLI](https://github.com/google-gemini/gemini-cli).
 
 In this architecture, Kai is the **sole primary agent** and decision-maker. All other agents act as specialized subagents that execute Kai's directives. Users interact _only_ with Kai. Kai analyzes requests, plans execution, routes to specialists, and ensures quality.
 
@@ -21,13 +21,15 @@ In this architecture, Kai is the **sole primary agent** and decision-maker. All 
 
 ### Prerequisites
 
-- [OpenCode](https://opencode.ai) installed and configured
+- [OpenCode](https://opencode.ai) or [Gemini CLI](https://github.com/google-gemini/gemini-cli) installed and configured
 - A terminal with bash or zsh
 - Git (optional, for cloning)
 
 ### Installation
 
-#### Quick Install (Recommended)
+#### OpenCode
+
+##### Quick Install (Recommended)
 
 Use the installer script to automatically download a specific Kai release and configure OpenCode:
 
@@ -69,7 +71,7 @@ curl -fsSL https://kai.21no.de/scripts/installer.sh | bash -s -- --help
 --repo OWNER/REPO    # Use custom GitHub repository (default: BackendStack21/kai)
 ```
 
-#### Manual Installation
+##### Manual Installation
 
 Alternatively, you can manually copy the `agents/` folder into your OpenCode configuration directory:
 
@@ -83,6 +85,54 @@ ln -s $(pwd)/kai-agents/agents ~/.config/opencode/agents
 ```
 
 The `agents/` folder is fully self-contained. Kai's agent definition (`agents/kai.md`) includes all behavioral instructions needed to operate — no external files required.
+
+#### Gemini CLI
+
+> **Note:** Unlike OpenCode (where Kai is one of several selectable primary agents), installing for Gemini CLI makes Kai the **default persona for every session**. Gemini CLI's subagent registration doesn't allow a subagent to call other subagents, so Kai has to run as the main persona (via `GEMINI.md`) instead of a selectable subagent — there's no separate "select Kai" step.
+
+##### Quick Install (Recommended)
+
+Use the installer script to automatically download a specific Kai release and configure Gemini CLI:
+
+```bash
+# Download and run the installer
+curl -fsSL https://kai.21no.de/scripts/installer-gemini.sh | bash -s -- latest --yes
+```
+
+```bash
+# Download and run the installer (replace latest with desired version)
+curl -fsSL https://kai.21no.de/scripts/installer-gemini.sh | bash -s -- v1.2.2 --yes
+```
+
+> **Note:** Replace `v1.2.2` with the desired [release version](https://github.com/BackendStack21/kai/releases). Existing `~/.gemini/GEMINI.md` content is preserved — the installer only appends an `@KAI.md` import line.
+
+**Installer Options:**
+
+```bash
+# See all available options
+curl -fsSL https://kai.21no.de/scripts/installer-gemini.sh | bash -s -- --help
+
+# Common options:
+--yes, -y            # Skip confirmation prompts
+--backup             # Create backup before installing
+--verbose            # Show detailed progress
+--dry-run            # Preview changes without installing
+--config-dir PATH    # Use custom Gemini CLI config directory (default: ~/.gemini)
+--output-dir PATH    # Use custom temporary directory
+--repo OWNER/REPO    # Use custom GitHub repository (default: BackendStack21/kai)
+```
+
+##### Manual Installation
+
+Alternatively, copy the `gemini/agents/` folder and `gemini/KAI.md` into your Gemini CLI configuration directory:
+
+```bash
+cp gemini/agents/*.md ~/.gemini/agents/
+cp gemini/KAI.md ~/.gemini/
+cp gemini/GEMINI.md ~/.gemini/   # only if you don't already have one
+```
+
+Restart Gemini CLI or run `/memory reload` to load the new context. See [gemini/README.md](gemini/README.md) for architecture details.
 
 ### How to Use Kai
 
@@ -238,10 +288,12 @@ These agents execute Kai's directives. They do not accept direct user input in t
 
 This section is for engineers maintaining the Kai system itself.
 
-### Configuration Principles
+### Configuration Principles (OpenCode)
 
 - **Kai Config**: Must be set to `mode: "primary"` and act as the sole decision-maker.
 - **Subagent Config**: All subagents must be set to `mode: "subagent"`. They should only respond to `DIRECTIVE` formats from Kai.
+
+> **Gemini CLI equivalent:** no `mode` field — every `gemini/agents/*.md` uses `kind: local`. Kai's primary/decision-maker role comes from `GEMINI.md` importing `KAI.md`, not agent frontmatter. See [gemini/README.md](gemini/README.md).
 
 ### Agent Specification Standard
 

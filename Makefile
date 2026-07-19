@@ -23,6 +23,8 @@ test-preflight: lint-agents
 lint-agents:
 	@echo "Linting agent definitions..."
 	@bash -lc 'bash tests/check_agents.sh'
+	@echo "Linting Gemini CLI agent definitions..."
+	@bash -lc 'bash tests/check_gemini_agents.sh'
 
 test-all: test-main
 	@echo ""
