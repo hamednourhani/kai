@@ -94,6 +94,20 @@ Simply address your request to Kai naturally. You do not need to know which suba
 - **Research**: "Compare Redis vs. Memcached for session storage." -> _Kai routes to `@research`_
 - **Engineering**: "Add Google OAuth login to the user service." -> _Kai orchestrates the `@engineering-team` pipeline_
 
+### How to Use Kai on Claude Code
+
+Kai also runs natively as a [Claude Code](https://claude.com/claude-code) subagent (see [`claude/README.md`](claude/README.md) for setup).
+
+```bash
+# Session-wide: Claude IS Kai
+claude --agent kai
+
+# Per-task: summon Kai via @-mention, without switching the whole session
+@agent-kai build an auth system
+```
+
+Once summoned, it works exactly the same way — address requests naturally, Kai classifies and routes to the right subagent.
+
 ### Response Times
 
 | Request Type                         | Estimated Time |
